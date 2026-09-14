@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>ParkUTP - Admin</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>ParkUTP - Admin</h1>
+        <div class="user-info">
+            <span id="welcome"></span>
+            <button onclick="logout()">Salir</button>
+        </div>
+    </header>
+
+    <main>
+        <section>
+            <div class="section-header">
+                <h2>Gestion de Parkings</h2>
+                <button class="btn-primary" onclick="abrirModalNuevo()">+ Nuevo Parking</button>
+            </div>
+            <div id="listaParkings" class="grid"></div>
+        </section>
+
+        <section>
+            <h2>Todas las Reservas</h2>
+            <table id="tablaReservas">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Parking</th>
+                        <th>Usuario</th>
+                        <th>Placa</th>
+                        <th>Tipo</th>
+                        <th>Tiempo</th>
+                        <th>Espacio</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+    </main>
+
+    <div id="modalParking" class="modal hidden">
+        <div class="modal-content modal-large">
+            <h3 id="modalTitulo">Nuevo Parking</h3>
+
+            <label>Nombre</label>
+            <input type="text" id="pNombre" placeholder="Ej: Parking Centro">
+
+            <label>Direccion</label>
+            <input type="text" id="pDireccion" placeholder="Ej: Av. Arequipa 123">
+
+            <label>Numero de espacios (sitios)</label>
+            <input type="number" id="pEspacios" min="1" value="20">
+
+            <label>Tarifa por hora - Carro (S/.)</label>
+            <input type="number" id="pTarifaHora" step="0.01" min="0" value="5.00">
+
+            <label>Tarifa por hora - Moto (S/.)</label>
+            <input type="number" id="pTarifaMoto" step="0.01" min="0" value="2.50">
+
+            <label>Tarifa por hora - Camioneta (S/.)</label>
+            <input type="number" id="pTarifaCamioneta" step="0.01" min="0" value="6.00">
+
+            <div class="modal-buttons">
+                <button onclick="cerrarModalParking()">Cancelar</button>
+                <button onclick="guardarParking()" class="primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>ParkUTP - Login</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="login-body">
+    <div class="login-box">
+        <h1>ParkUTP</h1>
+        <p class="subtitle">Sistema de Gestion de Estacionamientos</p>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Usuario" required>
+            <input type="password" id="password" placeholder="Contrasena" required>
+            <button type="submit">Ingresar</button>
+        </form>
+        <p id="errorMsg" class="error"></p>
+        <div class="hint">
+            <small>Demo: admin/admin123 - juan/1234</small>
+        </div>
+    </div>
+    <script src="/js/api.js"></script>
+    <script src="/js/login.js"></script>
+</body>
+</html>

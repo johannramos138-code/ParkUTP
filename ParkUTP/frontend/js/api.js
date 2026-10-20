@@ -60,6 +60,31 @@ const API = {
             : '/api/reservations';
         const r = await fetch(url);
         return r.json();
+    },
+
+    // ==================== TICKETS / BOLETAS ====================
+    /** Calcula el tiempo de estancia y la tarifa de una reserva sin emitir la boleta. */
+    async estimarTicket(reservationId) {
+        const r = await fetch('/api/tickets/estimado?reserva=' + encodeURIComponent(reservationId));
+        return r.json();
+    },
+
+    /** Emite la boleta: cierra la reserva, libera el espacio y devuelve el ticket. */
+    async crearTicket(reservationId, username) {
+        const r = await fetch('/api/tickets', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ reservationId, username })
+        });
+        return r.json();
+    },
+
+    async getTickets(username) {
+        const url = username
+            ? `/api/tickets?username=${encodeURIComponent(username)}`
+            : '/api/tickets';
+        const r = await fetch(url);
+        return r.json();
     }
 };
 

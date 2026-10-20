@@ -4,29 +4,46 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.parkutp.model.Parking;
 import com.parkutp.model.Reservation;
+import com.parkutp.model.Ticket;
 import com.parkutp.model.User;
 import com.parkutp.service.ParkingManager;
+import com.parkutp.service.TicketException;
+import com.parkutp.util.DatabaseInitializer;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 import java.util.concurrent.Executors;
 
 public class HttpServerApp {
 
-    private static final int PORT = 8080;
+    // Puerto configurable: -Dport=8081 o variable de entorno PORT (por defecto 8080)
+    private static final int PORT = Integer.parseInt(
+            System.getProperty("port",
+                    System.getenv().getOrDefault("PORT", "8080")));
     private static final String FRONTEND_DIR = "frontend";
     private static final ParkingManager manager = new ParkingManager();
     private static final ObjectMapper mapper = new ObjectMapper();
 
     public static void main(String[] args) throws Exception {
+        // 1. Inicializacion automatica de la base de datos: crea la base si falta
+        //    y aplica schema.sql / seed.sql con sentencias idempotentes.
+        DatabaseInitializer.Resultado inicializacion = DatabaseInitializer.inicializar();
+        if (!inicializacion.isExitoso()) {
+            System.err.println("Aviso: la base de datos no quedo completamente inicializada.");
+        }
+
+        // 2. Servidor HTTP
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
 
         server.createContext("/api/login", HttpServerApp::handleLogin);
         server.createContext("/api/parkings", HttpServerApp::handleParkings);
         server.createContext("/api/reservations", HttpServerApp::handleReservations);
+        server.createContext("/api/tickets/estimado", HttpServerApp::handleTicketEstimado);
+        server.createContext("/api/tickets", HttpServerApp::handleTickets);
         server.createContext("/", HttpServerApp::handleStatic);
 
         server.setExecutor(Executors.newFixedThreadPool(10));
@@ -53,11 +70,39 @@ public class HttpServerApp {
         }
 
         String body = new String(ex.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-        JsonNode json = mapper.readTree(body);
-        String username = json.get("username").asText();
-        String password = json.get("password").asText();
 
-        User user = manager.login(username, password);
+        JsonNode json;
+        try {
+            json = mapper.readTree(body);
+        } catch (Exception e) {
+            responder(ex, 400, "{\"status\":\"ERROR\",\"message\":\"JSON invalido\"}");
+            return;
+        }
+
+        JsonNode nodoUser = json.get("username");
+        JsonNode nodoPass = json.get("password");
+        if (nodoUser == null || nodoPass == null) {
+            responder(ex, 400, "{\"status\":\"ERROR\",\"message\":\"Faltan usuario o contrasena\"}");
+            return;
+        }
+
+        String username = nodoUser.asText();
+        String password = nodoPass.asText();
+
+        if (username.isBlank() || password.isBlank()) {
+            responder(ex, 400, "{\"status\":\"ERROR\",\"message\":\"Usuario y contrasena son obligatorios\"}");
+            return;
+        }
+
+        User user;
+        try {
+            user = manager.login(username, password);
+        } catch (SQLException e) {
+            System.err.println("Error de base de datos en login: " + e.getMessage());
+            responder(ex, 500, "{\"status\":\"ERROR\",\"message\":\"Error de conexion a la base de datos\"}");
+            return;
+        }
+
         if (user == null) {
             responder(ex, 401, "{\"status\":\"ERROR\",\"message\":\"Credenciales invalidas\"}");
         } else {
@@ -210,6 +255,111 @@ public class HttpServerApp {
         }
 
         responder(ex, 405, "{\"status\":\"ERROR\",\"message\":\"Metodo no permitido\"}");
+    }
+
+    // ==================== TICKETS / BOLETAS ====================
+
+    /** GET /api/tickets/estimado?reserva=R123 -> calcula estancia y tarifa sin emitir la boleta. */
+    private static void handleTicketEstimado(HttpExchange ex) throws IOException {
+        agregarCORS(ex);
+
+        if ("OPTIONS".equals(ex.getRequestMethod())) {
+            ex.sendResponseHeaders(204, -1);
+            return;
+        }
+
+        if (!"GET".equals(ex.getRequestMethod())) {
+            responder(ex, 405, "{\"status\":\"ERROR\",\"message\":\"Metodo no permitido\"}");
+            return;
+        }
+
+        String query = ex.getRequestURI().getQuery();
+        if (query == null || !query.startsWith("reserva=")) {
+            responder(ex, 400, "{\"status\":\"ERROR\",\"message\":\"Falta el parametro reserva\"}");
+            return;
+        }
+        String reservaId = query.substring("reserva=".length());
+
+        Ticket estimado = manager.estimarTicket(reservaId);
+        if (estimado == null) {
+            responder(ex, 404, "{\"status\":\"ERROR\",\"message\":\"La reserva no existe\"}");
+            return;
+        }
+
+        responder(ex, 200, "{\"status\":\"OK\",\"estimado\":" +
+                 mapper.writeValueAsString(estimado) + "}");
+    }
+
+    /** GET /api/tickets[?username=] lista boletas, POST /api/tickets emite una boleta. */
+    private static void handleTickets(HttpExchange ex) throws IOException {
+        agregarCORS(ex);
+
+        if ("OPTIONS".equals(ex.getRequestMethod())) {
+            ex.sendResponseHeaders(204, -1);
+            return;
+        }
+
+        String method = ex.getRequestMethod();
+
+        if ("GET".equals(method)) {
+            String query = ex.getRequestURI().getQuery();
+            String username = null;
+            if (query != null && query.startsWith("username=")) {
+                username = query.substring("username=".length());
+            }
+            String json = mapper.writeValueAsString(manager.listarTickets(username));
+            responder(ex, 200, json);
+            return;
+        }
+
+        if ("POST".equals(method)) {
+            String body = new String(ex.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+
+            JsonNode json;
+            try {
+                json = mapper.readTree(body);
+            } catch (Exception e) {
+                responder(ex, 400, "{\"status\":\"ERROR\",\"message\":\"JSON invalido\"}");
+                return;
+            }
+
+            JsonNode nodoReserva = json.get("reservationId");
+            JsonNode nodoUser = json.get("username");
+            if (nodoReserva == null) {
+                responder(ex, 400, "{\"status\":\"ERROR\",\"message\":\"Falta reservationId\"}");
+                return;
+            }
+
+            try {
+                Ticket t = manager.crearTicket(nodoReserva.asText(),
+                        nodoUser != null ? nodoUser.asText() : null);
+
+                if (t == null) {
+                    responder(ex, 500, "{\"status\":\"ERROR\",\"message\":\"No se pudo emitir la boleta\"}");
+                    return;
+                }
+
+                responder(ex, 200, "{\"status\":\"OK\",\"ticket\":" +
+                         mapper.writeValueAsString(t) + "}");
+            } catch (TicketException e) {
+                responder(ex, codigoPorMotivo(e.getMotivo()),
+                        "{\"status\":\"ERROR\",\"message\":\"" + e.getMessage() + "\"}");
+            }
+            return;
+        }
+
+        responder(ex, 405, "{\"status\":\"ERROR\",\"message\":\"Metodo no permitido\"}");
+    }
+
+    private static int codigoPorMotivo(TicketException.Motivo motivo) {
+        switch (motivo) {
+            case NO_ENCONTRADA:         return 404;
+            case SIN_PERMISO:           return 403;
+            case YA_EMITIDA:
+            case NO_ACTIVA:             return 409;
+            case PARKING_NO_ENCONTRADO: return 400;
+            default:                    return 400;
+        }
     }
 
     // ==================== ARCHIVOS ESTATICOS ====================

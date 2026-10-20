@@ -882,6 +882,138 @@ tbody tr:hover {
     }
 }
 
+/* ============ BOLETAS / TICKETS ============ */
+.ticket-preview {
+    border: 2px dashed #cbd5e1;
+    border-radius: 14px;
+    padding: 20px;
+    background: #fcfcfd;
+}
+
+.ticket-head {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.ticket-head h4 {
+    margin: 0;
+    font-size: 1.3rem;
+    letter-spacing: 3px;
+    color: var(--dark);
+}
+
+.ticket-head p {
+    margin: 2px 0 0;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    color: var(--gray);
+}
+
+.ticket-detalle {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ticket-detalle th,
+.ticket-detalle td {
+    padding: 6px 4px;
+    font-size: 0.85rem;
+    border: none;
+    background: transparent;
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+    color: var(--gray);
+}
+
+.ticket-detalle th {
+    width: 48%;
+    text-align: left;
+}
+
+.ticket-detalle td {
+    text-align: right;
+    color: var(--dark);
+    font-weight: 600;
+}
+
+.ticket-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 2px solid var(--dark);
+    margin-top: 14px;
+    padding-top: 12px;
+}
+
+.ticket-total span {
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--dark);
+}
+
+.ticket-total strong {
+    font-size: 1.4rem;
+    color: var(--primary-dark);
+}
+
+.ticket-nota {
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--gray);
+    margin: 14px 0 0;
+}
+
+.btn-ticket {
+    background: #e0e7ff;
+    color: var(--primary-dark);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.btn-ticket:hover {
+    background: #c7d2fe;
+    transform: translateY(-1px);
+}
+
+.btn-ticket.secondary {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.btn-ticket.secondary:hover {
+    background: #e2e8f0;
+}
+
+.acciones {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.celda-vacia {
+    text-align: center;
+    padding: 32px 16px;
+    color: var(--gray);
+    font-style: italic;
+}
+
+.sin-acciones {
+    color: var(--gray);
+}
+
+.modal-subtitle {
+    color: var(--gray);
+    font-size: 0.85rem;
+    margin-bottom: 14px;
+}
+
 /* ============ RESPONSIVE ============ */
 @media (max-width: 768px) {
     header {
@@ -921,5 +1053,13 @@ tbody tr:hover {
 
     .modal-content {
         padding: 24px;
+    }
+
+    .acciones {
+        flex-wrap: wrap;
+    }
+
+    .ticket-preview {
+        padding: 14px;
     }
 }

@@ -1,3 +1,14 @@
+// ==================== UTILIDADES ====================
+/** Escapa HTML para insertar datos sin riesgo de inyeccion de marcado. */
+function escaparHtml(texto) {
+    return String(texto ?? '-')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 // ==================== TOAST NOTIFICATIONS ====================
 function mostrarToast(mensaje, tipo = 'success') {
     let container = document.querySelector('.toast-container');

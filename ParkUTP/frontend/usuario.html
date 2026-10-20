@@ -51,6 +51,31 @@
                             <th>Espacio</th>
                             <th>Total</th>
                             <th>Estado</th>
+                            <th>Boleta</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section>
+            <h2>
+                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4-3h2v13h-2z"/></svg>
+                Mis Boletas
+            </h2>
+            <div class="tabla-container">
+                <table id="tablaTickets">
+                    <thead>
+                        <tr>
+                            <th>Boleta</th>
+                            <th>Fecha</th>
+                            <th>Parking</th>
+                            <th>Placa</th>
+                            <th>Estancia</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -91,8 +116,41 @@
         </div>
     </div>
 
+    <!-- Modal confirmar emision de boleta -->
+    <div id="modalConfirmarBoleta" class="modal hidden">
+        <div class="modal-content modal-large">
+            <h3>Emitir boleta de pago</h3>
+            <p class="modal-subtitle" id="confirmarBoletaInfo"></p>
+
+            <table class="ticket-detalle">
+                <tbody id="confirmarBoletaDetalle"></tbody>
+            </table>
+
+            <div class="modal-buttons">
+                <button onclick="cerrarModalConfirmarBoleta()">Cancelar</button>
+                <button onclick="confirmarEmisionBoleta()" class="primary">Emitir boleta</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal boleta emitida -->
+    <div id="modalBoleta" class="modal hidden">
+        <div class="modal-content modal-large">
+            <h3>Boleta emitida</h3>
+
+            <div id="boletaTicket"></div>
+
+            <div class="modal-buttons">
+                <button onclick="cerrarModalBoleta()">Cerrar</button>
+                <button onclick="descargarBoletaActual()">Descargar .txt</button>
+                <button onclick="imprimirBoletaActual()" class="primary">Imprimir</button>
+            </div>
+        </div>
+    </div>
+
     <script src="/js/api.js"></script>
     <script src="/js/ui.js"></script>
+    <script src="/js/boleta.js"></script>
     <script src="/js/usuario.js"></script>
 </body>
 </html>

@@ -64,12 +64,22 @@ body {
     bottom: -150px;
     left: -100px;
     animation: float 8s ease-in-out infinite reverse;
+
 }
 
 @keyframes float {
     0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-30px); }
 }
+
+
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-30px); }
+}
+
 
 .login-box {
     background: var(--white);
@@ -82,6 +92,7 @@ body {
     position: relative;
     z-index: 1;
     animation: slideUp 0.6s ease-out;
+
 }
 
 @keyframes slideUp {
@@ -106,6 +117,33 @@ body {
     justify-content: center;
     box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
 }
+
+
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-logo {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+}
+
 
 .login-logo svg {
     width: 40px;
@@ -135,6 +173,7 @@ body {
     font-size: 1rem;
     transition: all 0.2s;
     background: #f8fafc;
+
 }
 
 .login-box input:focus {
@@ -143,6 +182,17 @@ body {
     background: white;
     box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
 }
+
+
+}
+
+.login-box input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
 
 .login-box button {
     width: 100%;
@@ -227,6 +277,15 @@ header h1 {
     padding: 8px 16px;
     border-radius: 30px;
     font-size: 0.9rem;
+
+}
+
+.user-badge svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--primary-light);
+}
+
 }
 
 .user-badge svg {
@@ -303,6 +362,229 @@ section h2 svg {
     gap: 16px;
     transition: all 0.3s;
     border-left: 4px solid var(--primary);
+
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.stat-icon svg {
+    width: 26px;
+    height: 26px;
+    fill: white;
+}
+
+.stat-icon.blue { background: linear-gradient(135deg, #6366f1, #4f46e5); }
+.stat-icon.green { background: linear-gradient(135deg, #10b981, #059669); }
+.stat-icon.orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.stat-icon.red { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+.stat-info h3 {
+    font-size: 1.8rem;
+    color: var(--dark);
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.stat-info p {
+    color: var(--gray);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* ============ GRID PARKINGS ============ */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+}
+
+.card h3 {
+    margin-bottom: 8px;
+    color: var(--dark);
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.card .direccion {
+    color: var(--gray);
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.card .direccion svg {
+    width: 14px;
+    height: 14px;
+    fill: var(--gray);
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+
+.tarifas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.tarifa-item {
+    background: #f8fafc;
+    padding: 8px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.tarifa-item .tipo {
+    font-size: 0.7rem;
+    color: var(--gray);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.tarifa-item .precio {
+    font-size: 0.95rem;
+    color: var(--primary);
+    font-weight: 700;
+}
+
+/* Barra de progreso de ocupación */
+.ocupacion-bar {
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 12px 0;
+}
+
+.ocupacion-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--success), #34d399);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.ocupacion-fill.medio { background: linear-gradient(90deg, var(--warning), #fbbf24); }
+.ocupacion-fill.alto { background: linear-gradient(90deg, var(--danger), #f87171); }
+
+.ocupacion-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--gray);
+    margin-bottom: 12px;
+}
+
+.disponibles {
+    color: var(--success);
+    font-weight: 700;
+}
+
+.ocupados {
+    color: var(--danger);
+    font-weight: 700;
+}
+
+/* Botones de la card */
+.card button {
+    margin-top: 8px;
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.card button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(99, 102, 241, 0.3);
+}
+
+.card button:disabled {
+    background: #cbd5e1;
+    cursor: not-allowed;
+}
+
+/* ============ SECTION HEADER ============ */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.section-header h2 {
+    margin-bottom: 0;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--success), #059669);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+=======
 }
 
 .stat-card:hover {
@@ -745,6 +1027,229 @@ tbody tr:hover {
 
 .modal-large {
     max-width: 500px;
+
+}
+
+.btn-primary svg {
+    width: 18px;
+    height: 18px;
+    fill: white;
+}
+
+
+/* ============ TABLA ============ */
+.tabla-container {
+    background: white;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+th {
+    background: #f8fafc;
+    color: var(--dark);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+td {
+    border-bottom: 1px solid #f1f5f9;
+    color: #475569;
+}
+
+tbody tr {
+    transition: background 0.15s;
+}
+
+tbody tr:hover {
+    background: #f8fafc;
+}
+
+.estado-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.estado-badge.activa {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.estado-badge.finalizada {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+
+.tipo-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: #eef2ff;
+    color: var(--primary-dark);
+}
+
+/* ============ MODAL ============ */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+    animation: fadeIn 0.2s;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: white;
+    padding: 32px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: var(--shadow-xl);
+    animation: modalIn 0.3s ease-out;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-content h3 {
+    margin-bottom: 20px;
+    color: var(--dark);
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.modal-content label {
+    display: block;
+    margin-top: 16px;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #475569;
+    font-size: 0.85rem;
+}
+
+.modal-content input,
+.modal-content select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    background: #f8fafc;
+}
+
+.modal-content input:focus,
+.modal-content select:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.modal-content input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.tiempo-group {
+    display: flex;
+    gap: 10px;
+}
+
+.tiempo-group input {
+    flex: 1;
+}
+
+.precio-preview {
+    margin-top: 20px;
+    padding: 16px;
+    background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+    border-radius: 12px;
+    text-align: center;
+    color: var(--primary-dark);
+    font-size: 1.05rem;
+}
+
+.precio-preview strong {
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.modal-buttons button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.modal-buttons button:not(.primary) {
+    background: #f1f5f9;
+    color: var(--dark);
+}
+
+.modal-buttons button:not(.primary):hover {
+    background: #e2e8f0;
+}
+
+.modal-buttons button.primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+.modal-buttons button.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+}
+
+.modal-large {
+    max-width: 500px;
 }
 
 /* ============ CARD ACTIONS ============ */
@@ -752,6 +1257,38 @@ tbody tr:hover {
     display: flex;
     gap: 8px;
     margin-top: 12px;
+}
+
+.card-actions button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    margin-top: 0;
+}
+
+.btn-edit {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.btn-edit:hover {
+    background: #fde68a;
+    transform: translateY(-2px);
+}
+
+.btn-delete {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.btn-delete:hover {
+    background: #fecaca;
+    transform: translateY(-2px);
 }
 
 .card-actions button {
@@ -881,6 +1418,7 @@ tbody tr:hover {
         transform: translateX(0);
     }
 }
+
 
 /* ============ BOLETAS / TICKETS ============ */
 .ticket-preview {
@@ -1259,6 +1797,7 @@ tbody tr:hover {
 .notification-item time { color: var(--gray); font-size: 0.75rem; }
 .stat-icon span { color: white; font-weight: 800; }
 
+
 /* ============ RESPONSIVE ============ */
 @media (max-width: 768px) {
     header {
@@ -1300,6 +1839,7 @@ tbody tr:hover {
         padding: 24px;
     }
 
+
     .acciones {
         flex-wrap: wrap;
     }
@@ -1320,4 +1860,5 @@ tbody tr:hover {
     .parking-map {
         padding: 16px;
     }
+
 }

@@ -1,3 +1,4 @@
+
 // ==================== UTILIDADES ====================
 /** Escapa HTML para insertar datos sin riesgo de inyeccion de marcado. */
 function escaparHtml(texto) {

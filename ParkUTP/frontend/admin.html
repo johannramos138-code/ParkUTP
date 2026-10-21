@@ -27,6 +27,46 @@
 
         <section>
             <div class="section-header">
+                <h2>Notificaciones</h2>
+                <button class="btn-ticket secondary" id="marcarNotificacionesLeidas">Marcar todas como leidas</button>
+            </div>
+            <div id="listaNotificaciones" class="notification-list" aria-live="polite"></div>
+        </section>
+
+        <section>
+            <div class="section-header">
+                <h2>Reportes y graficos</h2>
+                <label class="report-period">
+                    Periodo
+                    <select id="periodoReporte">
+                        <option value="7">Ultimos 7 dias</option>
+                        <option value="30" selected>Ultimos 30 dias</option>
+                        <option value="90">Ultimos 90 dias</option>
+                    </select>
+                </label>
+            </div>
+            <div id="resumenReportes" class="report-summary"></div>
+            <div class="report-grid">
+                <article class="report-card">
+                    <h3>Ingresos por boletas</h3>
+                    <p class="report-caption">Importes de boletas emitidas en el periodo seleccionado.</p>
+                    <div id="graficoIngresos" class="chart-container"></div>
+                </article>
+                <article class="report-card">
+                    <h3>Reservas por dia</h3>
+                    <p class="report-caption">Reservas creadas en el periodo seleccionado.</p>
+                    <div id="graficoReservas" class="chart-container"></div>
+                </article>
+            </div>
+            <article class="report-card occupancy-report">
+                <h3>Ocupacion actual por parking</h3>
+                <div id="graficoOcupacion"></div>
+            </article>
+        </section>
+
+
+        <section>
+            <div class="section-header">
                 <h2>
                     <svg viewBox="0 0 24 24"><path d="M13 3H6v18h4v-6h3c3.31 0 6-2.69 6-6s-2.69-6-6-6zm.2 8H10V7h3.2c1.1 0 2 .9 2 2s-.9 2-2 2z"/></svg>
                     Gestion de Parkings
@@ -42,6 +82,17 @@
         </section>
 
         <section>
+
+            <h2>Mapa de espacios</h2>
+            <div class="map-toolbar">
+                <label for="selectorMapaEspacios">Parking</label>
+                <select id="selectorMapaEspacios"></select>
+            </div>
+            <div id="mapaEspacios" class="parking-map" aria-live="polite"></div>
+        </section>
+
+        <section>
+
             <h2>
                 <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
                 Todas las Reservas
@@ -99,6 +150,10 @@
 
     <script src="/js/api.js"></script>
     <script src="/js/ui.js"></script>
+
+    <script src="/js/mapa-espacios.js"></script>
+
     <script src="/js/admin.js"></script>
+    <script src="/js/dashboard-admin.js"></script>
 </body>
 </html>

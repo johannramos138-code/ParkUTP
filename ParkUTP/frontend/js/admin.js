@@ -31,6 +31,7 @@ async function cargarParkings() {
             </div>
         `;
     }).join('');
+    if (window.actualizarMapaEspacios) window.actualizarMapaEspacios();
 }
 
 // ==================== CARGAR RESERVAS ====================
